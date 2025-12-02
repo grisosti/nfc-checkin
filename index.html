@@ -19,10 +19,12 @@
       border-radius: 20px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.2);
       text-align: center;
+      width: 90%;
+      max-width: 400px;
     }
     h1 {
       color: #0066cc;
-      font-size: 36px;
+      font-size: 32px;
       margin-bottom: 10px;
     }
     p {
@@ -30,17 +32,19 @@
       color: #555;
     }
   </style>
+
   <script>
-    // Parameters for this NFC tag
+    // Fixed values for this NFC tag
     const cleaner = "Cleaner Test";
     const location = "Store room";
-    const secret = "12345";
 
-    window.onload = function() {
-      const url = `https://script.google.com/macros/s/AKfycbzN0dzhQAXrRAVzfe7ip_6yRZk9C_zKhIdMLnylYo3G0bwNSvRuOMyhBQ8vzEh52YWGjQ/exec?cleaner=${encodeURIComponent(cleaner)}&location=${encodeURIComponent(location)}&secret=${secret}&ua=${encodeURIComponent(navigator.userAgent)}`;
-      
+    window.onload = function () {
+      const ua = navigator.userAgent;
+
+      // Your Apps Script Web App endpoint
+      const url = `https://script.google.com/macros/s/YOUR_WEBAPP_ID/exec?cleaner=${encodeURIComponent(cleaner)}&location=${encodeURIComponent(location)}&ua=${encodeURIComponent(ua)}`;
+
       fetch(url)
-        .then(response => response.text())
         .then(() => {
           document.getElementById("status").innerText = "✔ Check-In Successful";
           document.getElementById("message").innerText = "Your access has been recorded.";
@@ -52,6 +56,7 @@
     };
   </script>
 </head>
+
 <body>
   <div class="container">
     <h1 id="status">Checking in...</h1>
