@@ -8,48 +8,61 @@
       font-family: Arial, sans-serif;
       padding: 40px;
       text-align: center;
+      background: #eef6ff;
     }
     .card {
       max-width: 450px;
       margin: auto;
-      padding: 25px;
-      border-radius: 12px;
-      background: #f5f5f5;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      padding: 30px;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
     }
-    h2 { color: #333; }
-    p { color: #555; }
+    h2 { color: #0a5fc2; margin-bottom: 10px; }
+    p { color: #444; margin: 5px 0; }
   </style>
 </head>
 <body>
 
 <div class="card">
   <h2>✔ Check-in recorded!</h2>
-  <p>You’re all set — thank you.</p>
+  <p><strong>Area:</strong> <span id="area">Loading...</span></p>
+  <p><strong>Staff:</strong> <span id="staff">Loading...</span></p>
   <p>(You can close this page)</p>
 </div>
 
 <script>
+  // Read URL parameters
   const params = new URLSearchParams(window.location.search);
-  const area = params.get("area") || "Unknown";
 
+  const area = params.get("area") || "Unknown";
+  const staff = params.get("staff") || "Unknown";
+
+  // Display Area and Staff on page
+  document.getElementById("area").innerText = area;
+  document.getElementById("staff").innerText = staff;
+
+  // Prepare data to send to Apps Script
   const data = {
     timestamp: new Date().toISOString(),
     area: area,
+    staff: staff,
     browser: navigator.appName,
     device: navigator.platform,
     userAgent: navigator.userAgent
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbxC64pf_P228lfbawJkYbZo38XLsQMyHu8-I8ZhPYFk3bLpBUaofKfPMkwL4bLUvq-gBA/exec",
-  {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
+  // Send silently to Apps Script
+  fetch(
+    "https://script.google.com/macros/s/AKfycbzN0dzhQAXrRAVzfe7ip_6yRZk9C_zKhIdMLnylYo3G0bwNSvRuOMyhBQ8vzEh52YWGjQ/exec",
+    {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    }
+  );
 </script>
 
 </body>
 </html>
-
