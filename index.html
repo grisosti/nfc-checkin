@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check-In</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: sans-serif;
+      background: #f1f8ff;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    h1 {
+      color: #0066cc;
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 18px;
+      color: #555;
+    }
+  </style>
+  <script>
+    // Parameters for this NFC tag
+    const cleaner = "Cleaner Test";
+    const location = "Store room";
+    const secret = "12345";
+
+    window.onload = function() {
+      const url = `https://script.google.com/macros/s/AKfycbzN0dzhQAXrRAVzfe7ip_6yRZk9C_zKhIdMLnylYo3G0bwNSvRuOMyhBQ8vzEh52YWGjQ/exec?cleaner=${encodeURIComponent(cleaner)}&location=${encodeURIComponent(location)}&secret=${secret}&ua=${encodeURIComponent(navigator.userAgent)}`;
+      
+      fetch(url)
+        .then(response => response.text())
+        .then(() => {
+          document.getElementById("status").innerText = "✔ Check-In Successful";
+          document.getElementById("message").innerText = "Your access has been recorded.";
+        })
+        .catch(() => {
+          document.getElementById("status").innerText = "❌ Check-In Failed";
+          document.getElementById("message").innerText = "Please try again.";
+        });
+    };
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1 id="status">Checking in...</h1>
+    <p id="message"></p>
+  </div>
+</body>
+</html>
