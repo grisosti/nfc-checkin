@@ -1,69 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Check-In</title>
+  <meta charset="UTF-8">
+  <title>Check-in</title>
   <style>
     body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: sans-serif;
-      background: #f1f8ff;
-      margin: 0;
-    }
-    .container {
-      background: white;
+      font-family: Arial, sans-serif;
       padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
       text-align: center;
-      width: 90%;
-      max-width: 400px;
     }
-    h1 {
-      color: #0066cc;
-      font-size: 32px;
-      margin-bottom: 10px;
+    .card {
+      max-width: 450px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 12px;
+      background: #f5f5f5;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
     }
-    p {
-      font-size: 18px;
-      color: #555;
-    }
+    h2 { color: #333; }
+    p { color: #555; }
   </style>
-
-  <script>
-    // Fixed values for this NFC tag
-    const cleaner = "Cleaner Test";
-    const location = "Store room";
-
-    window.onload = function () {
-      const ua = navigator.userAgent;
-
-      // Your Apps Script Web App endpoint
-      const url = 'https://script.google.com/macros/s/AKfycbzN0dzhQAXrRAVzfe7ip_6yRZk9C_zKhIdMLnylYo3G0bwNSvRuOMyhBQ8vzEh52YWGjQ/exec?cleaner=${encodeURIComponent(cleaner)}&location=${encodeURIComponent(location)}&ua=${encodeURIComponent(ua)}';
-
-      fetch(url)
-        .then(() => {
-          document.getElementById("status").innerText = "✔ Check-In Successful";
-          document.getElementById("message").innerText = "Your access has been recorded.";
-        })
-        .catch(() => {
-          document.getElementById("status").innerText = "❌ Check-In Failed";
-          document.getElementById("message").innerText = "Please try again.";
-        });
-    };
-  </script>
 </head>
-
 <body>
-  <div class="container">
-    <h1 id="status">Checking in...</h1>
-    <p id="message"></p>
-  </div>
+
+<div class="card">
+  <h2>✔ Check-in recorded!</h2>
+  <p>You’re all set — thank you.</p>
+  <p>(You can close this page)</p>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const area = params.get("area") || "Unknown";
+
+  const data = {
+    timestamp: new Date().toISOString(),
+    area: area,
+    browser: navigator.appName,
+    device: navigator.platform,
+    userAgent: navigator.userAgent
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbzN0dzhQAXrRAVzfe7ip_6yRZk9C_zKhIdMLnylYo3G0bwNSvRuOMyhBQ8vzEh52YWGjQ/exec",
+  {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+</script>
+
 </body>
 </html>
-
-
-
